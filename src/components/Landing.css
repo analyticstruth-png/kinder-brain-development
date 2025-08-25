@@ -1,0 +1,296 @@
+.landing-container {
+    font-family: 'Quicksand', sans-serif;
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 25%, #80deea 50%, #4dd0e1 100%);
+    color: #33691e;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    padding: 20px;
+}
+
+.background-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+}
+
+.sprout {
+    position: absolute;
+    font-size: 2rem;
+    opacity: 0.3;
+    z-index: 0;
+    animation: float 6s infinite ease-in-out;
+}
+
+.sprout:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+.sprout:nth-child(2) { top: 15%; right: 7%; animation-delay: 1s; }
+.sprout:nth-child(3) { top: 40%; left: 8%; animation-delay: 2s; }
+.sprout:nth-child(4) { bottom: 20%; right: 10%; animation-delay: 3s; }
+.sprout:nth-child(5) { bottom: 10%; left: 15%; animation-delay: 4s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(5deg); }
+}
+
+.landing-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+.landing-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-top: 2rem;
+    position: relative;
+}
+
+.landing-title {
+    font-family: 'Fredoka One', cursive;
+    font-size: 4.5rem;
+    font-weight: 400;
+    color: #2e7d32;
+    text-shadow: 3px 3px 0px rgba(255, 255, 255, 0.7);
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+    padding: 0 30px;
+    z-index: 2;
+}
+
+.title-background {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 8rem;
+    opacity: 0.15;
+    z-index: 1;
+    color: #4caf50;
+}
+
+.landing-subtitle {
+    font-size: 1.5rem;
+    color: #558b2f;
+    margin-bottom: 2rem;
+    font-weight: 600;
+}
+
+.landing-sections {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.email-section {
+    flex: 1;
+    min-width: 350px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.email-section h2 {
+    font-size: 2rem;
+    color: #ff6f00;
+    margin-bottom: 1.5rem;
+}
+
+.email-section p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.email-input {
+    padding: 1rem 1.5rem;
+    border: 2px solid #a5d6a7;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.email-input:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.3);
+}
+
+.submit-button {
+    background: linear-gradient(to right, #8bc34a, #4caf50);
+    color: white;
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 50px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(139, 195, 74, 0.5);
+}
+
+.submit-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(139, 195, 74, 0.7);
+}
+
+.puzzle-section {
+    flex: 1;
+    min-width: 350px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.puzzle-section h2 {
+    font-size: 2rem;
+    color: #ff6f00;
+    margin-bottom: 1.5rem;
+}
+
+.puzzle-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+    margin-top: 1.5rem;
+}
+
+.puzzle-piece {
+    aspect-ratio: 1;
+    background: linear-gradient(135deg, #c5e1a5, #8bc34a);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+    clip-path: polygon(
+        0% 15%, 15% 15%, 15% 0%, 85% 0%, 85% 15%, 
+        100% 15%, 100% 85%, 85% 85%, 85% 100%, 
+        15% 100%, 15% 85%, 0% 85%
+    );
+    margin: -2px;
+}
+
+.puzzle-piece::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='rgba(255,255,255,0.2)'/%3E%3C/svg%3E");
+    background-size: cover;
+    opacity: 0.3;
+}
+
+.puzzle-piece:hover {
+    transform: translateY(-5px) scale(1.05);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}
+
+.puzzle-piece:nth-child(4n+2),
+.puzzle-piece:nth-child(4n+3) {
+    background: linear-gradient(135deg, #aed581, #7cb342);
+}
+
+.puzzle-piece:nth-child(4n+1) {
+    background: linear-gradient(135deg, #9ccc65, #689f38);
+}
+
+.week-text {
+    font-size: 0.8rem;
+    position: absolute;
+    bottom: 12px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
+
+.landing-footer {
+    text-align: center;
+    margin-top: 4rem;
+    padding: 2rem;
+    color: #558b2f;
+    font-size: 1.1rem;
+}
+
+.week-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 2rem;
+    border-radius: 20px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .landing-title {
+        font-size: 3rem;
+    }
+    
+    .title-background {
+        font-size: 5rem;
+    }
+    
+    .landing-sections {
+        flex-direction: column;
+    }
+    
+    .puzzle-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
