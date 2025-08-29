@@ -1,1 +1,11 @@
-API_KEY = "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"
+# Remove the old version from git tracking
+git rm --cached config.py
+
+# Add the fixed version
+git add config.py
+
+# Commit
+git commit -m "Fix config.py to use environment variables"
+
+# Push
+git push origin main
