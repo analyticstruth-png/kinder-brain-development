@@ -1,27 +1,56 @@
 import express from 'express';
 import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import dotenv from 'dotenv';
+import postsRoutes from './routes/posts.js';
+import aiRoutes from './routes/aiRoutes.js';
+
+dotenv.config();
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
-// Enable CORS for all routes
+// Middleware
+app.use(helmet());
 app.use(cors({
-  origin: 'http://localhost:5173', // Your React frontend URL
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
 }));
+app.use(morgan('combined'));
+app.use(express.json({ limit: '10mb' }));
 
-app.use(express.json());
+// Routes
+app.use('/api/posts', postsRoutes);
+app.use('/api/ai', aiRoutes);
 
-// Test route
+// Health check
 app.get('/api/health', (req, res) => {
   res.json({ 
-    message: 'Kinder Brain Development API is working!',
+    status: 'OK', 
+    message: 'Server is running',
     timestamp: new Date().toISOString(),
     version: '1.0.0'
   });
 });
 
-// Activities route - expanded with more data
+// Root API endpoint
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'Welcome to Kinder Brain Development API',
+    version: '1.0.0',
+    endpoints: {
+      posts: '/api/posts',
+      ai: '/api/ai',
+      health: '/api/health',
+      activities: '/api/activities',
+      user: '/api/user/:id',
+      progress: '/api/progress'
+    }
+  });
+});
+
+// Your existing activities routes
 app.get('/api/activities', (req, res) => {
   const activities = [
     { 
@@ -76,11 +105,10 @@ app.get('/api/activities', (req, res) => {
   res.json(activities);
 });
 
-// New endpoint to save user progress
+// Progress tracking endpoint
 app.post('/api/progress', (req, res) => {
   const { userId, activityId, score, timeSpent } = req.body;
   
-  // In a real application, you would save this to a database
   console.log('Progress saved:', { userId, activityId, score, timeSpent, timestamp: new Date() });
   
   res.json({ 
@@ -90,11 +118,10 @@ app.post('/api/progress', (req, res) => {
   });
 });
 
-// New endpoint to get user profile
+// User profile endpoint
 app.get('/api/user/:userId', (req, res) => {
   const { userId } = req.params;
   
-  // Mock user data - in real app, fetch from database
   res.json({
     id: userId,
     name: 'Young Learner',
@@ -105,11 +132,25 @@ app.get('/api/user/:userId', (req, res) => {
   });
 });
 
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// 404 handler for API routes
+app.use('/api/*', (req, res) => {
+  res.status(404).json({ error: 'API endpoint not found' });
+});
+
 // Keep server running
 const server = app.listen(PORT, () => {
-  console.log(`🚀 Backend server running on http://localhost:${PORT}`);
-  console.log(`📊 Health check: http://localhost:${PORT}/api/health`);
-  console.log(`🎯 Activities API: http://localhost:${PORT}/api/activities`);
+  console.log(`🚀 Server running on port ${PORT}`);
+  console.log(`📚 API available at http://localhost:${PORT}/api`);
+  console.log(`🤖 AI endpoints: http://localhost:${PORT}/api/ai`);
+  console.log(`🏥 Health check: http://localhost:${PORT}/api/health`);
+  console.log(`🎯 Activities: http://localhost:${PORT}/api/activities`);
+  console.log(`📊 User API: http://localhost:${PORT}/api/user/123`);
 });
 
 // Handle graceful shutdown

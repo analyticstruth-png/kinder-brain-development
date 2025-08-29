@@ -1,0 +1,38 @@
+{
+  "short_name": "Kinder Brain",
+  "name": "Kinder Brain Development - Early Learning Resources",
+  "description": "Evidence-based educational activities and resources for early childhood brain development",
+  "icons": [
+    {
+      "src": "favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "brain-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#4f46e5",
+  "background_color": "#ffffff",
+  "categories": ["education", "kids", "parenting"],
+  "lang": "en-US",
+  "orientation": "portrait-primary"
+}
