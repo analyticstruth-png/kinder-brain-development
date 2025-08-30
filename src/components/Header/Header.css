@@ -110,14 +110,16 @@
 }
 
 /* Responsive design */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .navbar {
     padding: 1rem;
   }
   
   .nav-links {
-    display: none; /* Hidden on mobile - will use mobile menu */
+    display: flex; /* CHANGE FROM none to flex */
+    flex-direction: column;
   }
+}
   
   .mobile-menu-button {
     display: block;

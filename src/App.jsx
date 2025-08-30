@@ -32,7 +32,8 @@ function App() {
             {/* BLOG ROUTES - MUST BE INCLUDED */}
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogPost />} />
-          </Routes>
+          <Route path="/cognitive-agent" element={<CognitiveAgentPage />} />
+</Routes>
         </main>
         <Footer />
       </div>

@@ -4,12 +4,76 @@ import pool from '../config/database.js';
 
 const router = express.Router();
 
-// Initialize OpenAI with API key from environment variables
+// Initialize OpenAI with API key and project specification
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY
+  apiKey: process.env.OPENAI_API_KEY,
+  project: 'proj_1m7XeWjrBSBuVnvZf0tB1FfX' // 
 });
 
-// AI Blog Generation Endpoint
+// AI Cognitive Response Endpoint - MAIN AI AGENT
+router.post('/cognitive/respond', async (req, res) => {
+  try {
+    const { message } = req.body;
+
+    if (!message || message.trim().length === 0) {
+      return res.status(400).json({ 
+        error: 'Message is required',
+        content: 'Please provide a question or message to continue.'
+      });
+    }
+
+    // If no API key, return informative message
+    if (!process.env.OPENAI_API_KEY || process.env.OPENAI_API_KEY === 'your_openai_api_key_here') {
+      return res.json({
+        content: "Welcome to the Cognitive Skills AI Assistant! I'm currently in setup mode. " +
+                "Please configure the OpenAI API key to enable full functionality. " +
+                "In the meantime, here's a tip: Regular reading and problem-solving activities " +
+                "significantly boost children's cognitive development.",
+        cognitiveSkills: ['Cognitive Development', 'Learning', 'Brain Health']
+      });
+    }
+
+    // Use real OpenAI API
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [{
+        role: 'system',
+        content: 'You are a cognitive development expert specializing in children\'s brain development ' +
+                'ages 0-5. Provide practical, evidence-based advice. Focus on: ' +
+                '- Cognitive skill development\n- Brain growth strategies\n- Practical activities\n' +
+                '- Age-appropriate exercises\n- Scientific research findings\n' +
+                'Keep responses educational, supportive, and actionable.'
+      }, {
+        role: 'user',
+        content: message
+      }],
+      max_tokens: 600,
+      temperature: 0.7
+    });
+
+    const aiResponse = completion.choices[0]?.message?.content;
+
+    res.json({
+      content: aiResponse,
+      cognitiveSkills: extractCognitiveSkills(aiResponse),
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('Cognitive AI Error:', error);
+    
+    res.status(500).json({
+      content: "I apologize, I'm experiencing technical difficulties. " +
+              "Please try again in a moment. For now, consider trying: " +
+              "1. Reading interactive books together\n2. Engaging in puzzle games\n" +
+              "3. Practicing memory matching games\n4. Exploring sensory play activities",
+      cognitiveSkills: ['Technical Difficulty'],
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
+  }
+});
+
+// AI Blog Generation Endpoint (keep existing)
 router.post('/generate-blog', async (req, res) => {
   try {
     const { topic, style = "educational" } = req.body;
@@ -64,7 +128,7 @@ router.post('/generate-blog', async (req, res) => {
   }
 });
 
-// AI Generate and Save Endpoint (generates and saves to database)
+// AI Generate and Save Endpoint (keep existing)
 router.post('/generate-and-save', async (req, res) => {
   try {
     const { topic, style = "educational" } = req.body;
@@ -119,7 +183,34 @@ router.post('/generate-and-save', async (req, res) => {
   }
 });
 
-// Helper functions
+// Helper function to extract cognitive skills from AI response
+function extractCognitiveSkills(content) {
+  if (!content) return ['General Cognitive Development'];
+  
+  const skills = [];
+  const skillKeywords = {
+    'Problem Solving': ['problem.solv', 'puzzle', 'logic', 'reasoning'],
+    'Critical Thinking': ['critical think', 'analy', 'evaluat', 'question'],
+    'Memory': ['memory', 'recall', 'remember', 'memoriz'],
+    'Attention': ['attention', 'focus', 'concentrat', 'engage'],
+    'Language': ['language', 'vocabulary', 'reading', 'writing', 'speak'],
+    'Executive Function': ['executive', 'planning', 'organiz', 'self.control'],
+    'Social Skills': ['social', 'share', 'cooperat', 'empathy'],
+    'Creativity': ['creative', 'imagin', 'innovative', 'art', 'music']
+  };
+
+  const contentLower = content.toLowerCase();
+  
+  Object.entries(skillKeywords).forEach(([skill, keywords]) => {
+    if (keywords.some(keyword => contentLower.includes(keyword))) {
+      skills.push(skill);
+    }
+  });
+
+  return skills.length > 0 ? skills : ['Cognitive Development', 'Learning Skills'];
+}
+
+// Helper functions (keep existing)
 function generateEnhancedMockPost(topic) {
   return `# 🧠 ${topic}: Boost Your Child's Brain Development
 
